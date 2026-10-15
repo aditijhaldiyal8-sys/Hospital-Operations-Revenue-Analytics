@@ -108,27 +108,27 @@ Expected output files:
 
 ## Repository Structure
 
-The repository can be organized as follows:
-
 ```text
-Hospital-Analytics/
-│
+Hospital-Operations-Revenue-Analytics/
 ├── README.md
-├── SQL/
-│   └── hospital_analysis.sql
-├── Python/
-│   └── healthcare_ml.ipynb
-├── PowerBI/
-│   └── Hospital_Analytics_Dashboard.pbix
-├── data/
-│   └── dummy_hospital_generated.csv
-└── outputs/
-    ├── revenue_predictions.csv
-    ├── los_predictions.csv
-    └── model_metrics.csv
+├── healthcare_analysis.sql
+├── healthcare_ml.ipynb
+├── hospitalcare.pbix
+├── dummy_hospital_generated.csv
+├── revenue_predictions.csv
+├── los_predictions.csv
+└── model_metrics.csv
 ```
 
-*Adjust the folder and file names to match your actual repository.*
+## Files Overview
+
+- `healthcare_analysis.sql` — SQL data cleaning and hospital analytics.
+- `healthcare_ml.ipynb` — Python preprocessing, machine learning, and model evaluation.
+- `hospitalcare.pbix` — Power BI dashboards for hospital operations and ML results.
+- `dummy_hospital_generated.csv` — Generated hospital dataset used for analysis.
+- `revenue_predictions.csv` — Actual and predicted revenue values.
+- `los_predictions.csv` — Actual and predicted Length of Stay values.
+- `model_metrics.csv` — MAE, RMSE, and R² results for the trained models.
 
 ## How to Explore the Project
 
