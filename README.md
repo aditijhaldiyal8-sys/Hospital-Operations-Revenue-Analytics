@@ -106,6 +106,16 @@ Expected output files:
 - Operational patterns across patient and case categories.
 - Comparison of regression models for LOS and revenue prediction.
 
+
+## Power BI Dashboard
+
+<img width="766" height="428" alt="Screenshot (566)" src="https://github.com/user-attachments/assets/4ef3e0ca-7ae9-4295-a8cf-35d5267996d7" />
+<img width="760" height="429" alt="Screenshot (567)" src="https://github.com/user-attachments/assets/767f5d2b-85d0-495d-8939-1fc25aa88f68" />
+<img width="761" height="428" alt="Screenshot (568)" src="https://github.com/user-attachments/assets/6bcb157b-e409-4b43-80fb-c74643ef9914" />
+<img width="755" height="427" alt="Screenshot (569)" src="https://github.com/user-attachments/assets/04084f61-f72b-4b20-93d6-c90f15eeb587" />
+<img width="750" height="423" alt="Screenshot (570)" src="https://github.com/user-attachments/assets/4f209c8b-0849-40b7-ab96-abadfef4d74a" />
+
+
 ## Repository Structure
 
 ```text
