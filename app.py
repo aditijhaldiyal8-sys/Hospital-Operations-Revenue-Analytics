@@ -15,14 +15,12 @@ st.title("HospitalIQ")
 st.write("Interactive Hospital Operations & Revenue Analytics Dashboard")
 
 # 3. Find the project folder and CSV file
-project_root = os.path.dirname(
-    os.path.dirname(os.path.abspath(__file__))
-)
 
-csv_path = os.path.join(
-    project_root,
-    "dummy_hospital_generated.csv"
-)
+from pathlib import Path
+
+project_root = Path(__file__).resolve().parent.parent
+csv_path = project_root / "dummy_hospital_generated.csv"
+
 
 # 4. Load the hospital dataset
 try:
