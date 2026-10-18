@@ -18,11 +18,8 @@ st.write("Interactive Hospital Operations & Revenue Analytics Dashboard")
 
 from pathlib import Path
 
-project_root = Path(__file__).resolve().parent.parent
+project_root = Path(__file__).resolve().parent
 csv_path = project_root / "dummy_hospital_generated.csv"
-st.write("CSV path being checked:", str(csv_path))
-st.write("Does the CSV exist?", csv_path.exists())
-
 
 # 4. Load the hospital dataset
 try:
