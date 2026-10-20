@@ -166,15 +166,19 @@ Hospital-Operations-Revenue-Analytics/
 
 This project is intended for educational and portfolio purposes. The dataset is generated, and the analyses and predictions are not intended for clinical decision-making or real-world financial planning.
 
-## Interactive HospitalIQ Website
+## 🌐 Interactive HospitalIQ Web App
 
-Explore the interactive hospital operations and revenue analytics dashboard built using Python, Pandas, and Streamlit.
+I built an interactive web application using **Python, Pandas, and Streamlit** to explore hospital operations and revenue data.
 
-**Live Website:** https://hospital-operations-revenue-analytics-8lyuhdpkot4ry3bo2ws7sd.streamlit.app/
+### Features
+- Interactive filters for Month, Specialty, Case Type, Gender, and Severity
+- KPI cards for Total Cases, Total Revenue, Average Revenue, and Average Length of Stay
+- Interactive charts to analyze hospital revenue and case distribution
+- Search hospital records by Case Number
+- View and download filtered hospital data
 
-**Features**
-- Interactive filters for month, specialty, and case type
-- Key performance indicators (KPIs) for cases and revenue
-- Revenue analysis by specialty
-- Filtered hospital dataset preview
-- Download filtered data as a CSV file
+### Live Demo
+[**Launch HospitalIQ Web App**](https://hospital-operations-revenue-analytics-8lyuhdpkot4ry3bo2ws7sd.streamlit.app/)
+
+### Tech Stack
+Python | Pandas | Streamlit | PostgreSQL | Power BI | Machine Learning
