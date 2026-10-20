@@ -63,9 +63,15 @@ st.title("HospitalIQ")
 st.write("Interactive Hospital Operations & Revenue Analytics Dashboard")
 
 # 3. Find the project folder and CSV file
-project_root = Path(__file__).resolve().parent.parent
-csv_path = project_root / "dummy_hospital_generated.csv"
+app_dir = Path(__file__).resolve().parent
+csv_name = "dummy_hospital_generated.csv"
 
+candidates = [
+    app_dir / csv_name,
+    app_dir.parent / csv_name,
+]
+
+csv_path = next((p for p in candidates if p.exists()), candidates[0])
 # 4. Load the hospital dataset
 try:
     df = pd.read_csv(csv_path)
