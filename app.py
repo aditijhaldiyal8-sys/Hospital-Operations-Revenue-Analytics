@@ -1,7 +1,7 @@
-
 import os
 import pandas as pd
 import streamlit as st
+from pathlib import Path
 
 # 1. Website settings
 st.set_page_config(
@@ -10,15 +10,60 @@ st.set_page_config(
     layout="wide"
 )
 
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background: #e6f4ff !important;
+    }
+    h1 {
+        color: #ff0000 !important;
+        font-size: 50px !important;
+    }
+    div[data-testid="stMetric"] {
+    background-color: white;
+    border: 1px solid #c5e1f5;
+    padding: 16px 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    min-width: 0;
+}
+
+div[data-testid="stMetricValue"] {
+    font-size: clamp(16px, 1.6vw, 28px) !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+}
+
+
+/* Sidebar background */
+section[data-testid="stSidebar"] {
+    background-color: #d9efff !important;
+}
+
+/* Sidebar headings */
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3 {
+    color: #12345a !important;
+}
+
+/* Filter labels */
+section[data-testid="stSidebar"] label {
+    color: #23445f !important;
+    font-weight: 600;
+}
+</style>
+    """,
+    unsafe_allow_html=True
+)
+
 # 2. Website heading
 st.title("HospitalIQ")
 st.write("Interactive Hospital Operations & Revenue Analytics Dashboard")
 
 # 3. Find the project folder and CSV file
-
-from pathlib import Path
-
-project_root = Path(__file__).resolve().parent
+project_root = Path(__file__).resolve().parent.parent
 csv_path = project_root / "dummy_hospital_generated.csv"
 
 # 4. Load the hospital dataset
@@ -54,12 +99,30 @@ selected_case_types = st.sidebar.multiselect(
     case_type_options,
     default=case_type_options
 )
+# Gender filter
+gender_options = sorted(df["Gender"].dropna().unique().tolist())
 
+selected_genders = st.sidebar.multiselect(
+    "Select Gender",
+    gender_options,
+    default=gender_options
+)
+
+# Severity filter
+severity_options = sorted(df["Severity"].dropna().unique().tolist())
+
+selected_severities = st.sidebar.multiselect(
+    "Select Severity",
+    severity_options,
+    default=severity_options
+)
 # 7. Filter the dataset
 filtered_df = df[
     df["Month"].isin(selected_months)
     & df["Specialty"].isin(selected_specialties)
     & df["Case type"].isin(selected_case_types)
+    & df["Gender"].isin(selected_genders)
+    & df["Severity"].isin(selected_severities)
 ]
 
 # 8. Calculate dashboard KPIs
@@ -94,27 +157,70 @@ col4.metric(
     f"{average_los:.2f}" if pd.notna(average_los) else "N/A"
 )
 
-# 10. Revenue chart by specialty
-st.subheader("Revenue by Specialty")
+
+# 10. Interactive chart
+st.subheader("Explore Hospital Data")
+
+chart_choice = st.selectbox(
+    "Choose what you want to analyze",
+    [
+        "Revenue by Specialty",
+        "Cases by Specialty",
+        "Revenue by Case Type",
+        "Cases by Gender",
+        "Cases by Severity"
+    ]
+)
 
 chart_df = filtered_df.copy()
 chart_df["Revenue"] = pd.to_numeric(
     chart_df["Revenue"], errors="coerce"
 )
 
-revenue_by_specialty = (
-    chart_df.groupby("Specialty")["Revenue"]
-    .sum()
-    .sort_values(ascending=False)
+if chart_choice == "Revenue by Specialty":
+    chart_data = chart_df.groupby("Specialty")["Revenue"].sum()
+    chart_data = chart_data.sort_values(ascending=False)
+    st.bar_chart(chart_data)
+
+elif chart_choice == "Cases by Specialty":
+    chart_data = chart_df["Specialty"].value_counts()
+    st.bar_chart(chart_data)
+
+elif chart_choice == "Revenue by Case Type":
+    chart_data = chart_df.groupby("Case type")["Revenue"].sum()
+    st.bar_chart(chart_data)
+
+elif chart_choice == "Cases by Gender":
+    chart_data = chart_df["Gender"].value_counts()
+    st.bar_chart(chart_data)
+
+elif chart_choice == "Cases by Severity":
+    chart_data = chart_df["Severity"].value_counts().sort_index()
+    st.bar_chart(chart_data)
+
+
+
+# 11. Search hospital cases
+st.subheader("Search Hospital Cases")
+
+search_term = st.text_input(
+    "Search by Case Number",
+    placeholder="Enter a case number..."
 )
 
-st.bar_chart(revenue_by_specialty)
+search_df = filtered_df.copy()
 
-# 11. Display the filtered dataset
-st.subheader("Hospital Dataset")
-st.write(f"Showing {len(filtered_df):,} cases")
+if search_term:
+    search_df = search_df[
+        search_df["Case_No"].astype(str).str.contains(
+            search_term, case=False, na=False
+        )
+    ]
 
-st.dataframe(filtered_df, use_container_width=True)
+st.write(f"Showing {len(search_df):,} cases")
+
+st.dataframe(search_df, use_container_width=True)
+
 
 # 12. Download filtered data
 csv_data = filtered_df.to_csv(index=False).encode("utf-8")
@@ -125,4 +231,15 @@ st.download_button(
     file_name="hospital_filtered_data.csv",
     mime="text/csv"
 )
+
+
+
+
+
+
+
+
+
+
+
 
