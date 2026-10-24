@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import streamlit as st
 from pathlib import Path
-
+import plotly.express as px
 # 1. Website settings
 st.set_page_config(
     page_title="HospitalIQ",
