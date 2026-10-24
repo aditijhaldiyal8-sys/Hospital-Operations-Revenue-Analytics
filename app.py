@@ -254,7 +254,7 @@ from pathlib import Path
 
 project_root = Path(__file__).resolve().parent
 
-metrics_path = project_root / "outputs" / "model_metrics.csv"
+metrics_path = project_root / "model_metrics.csv"
 
 if metrics_path.exists():
     metrics_df = pd.read_csv(metrics_path)
