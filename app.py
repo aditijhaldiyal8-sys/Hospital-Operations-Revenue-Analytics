@@ -250,6 +250,10 @@ st.write(
     "and Random Forest models for Length of Stay and Revenue."
 )
 
+from pathlib import Path
+
+project_root = Path(__file__).resolve().parent
+
 metrics_path = project_root / "outputs" / "model_metrics.csv"
 
 if metrics_path.exists():
