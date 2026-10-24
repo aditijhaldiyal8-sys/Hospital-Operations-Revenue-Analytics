@@ -239,6 +239,109 @@ st.download_button(
 )
 
 
+# --------------------------------------------------
+# ML MODEL PERFORMANCE AND FINDINGS
+# --------------------------------------------------
+
+st.header("🤖 Machine Learning Findings")
+
+st.write(
+    "Comparison of Linear Regression, Decision Tree, "
+    "and Random Forest models for Length of Stay and Revenue."
+)
+
+metrics_path = project_root / "outputs" / "model_metrics.csv"
+
+if metrics_path.exists():
+    metrics_df = pd.read_csv(metrics_path)
+
+    # Best model for each prediction task, based on MAE
+    los_results = metrics_df[metrics_df["Target"] == "LOS"]
+    revenue_results = metrics_df[metrics_df["Target"] == "Revenue"]
+
+    col1, col2 = st.columns(2)
+
+    if not los_results.empty:
+        best_los = los_results.loc[los_results["MAE"].idxmin()]
+
+        col1.metric(
+            "Best LOS Model (by MAE)",
+            str(best_los["Model"]),
+            f'MAE: {best_los["MAE"]:.3f} days'
+        )
+
+    if not revenue_results.empty:
+        best_revenue = revenue_results.loc[
+            revenue_results["MAE"].idxmin()
+        ]
+
+        col2.metric(
+            "Best Revenue Model (by MAE)",
+            str(best_revenue["Model"]),
+            f'MAE: ₹{best_revenue["MAE"]:,.2f}'
+        )
+
+    # Model comparison charts
+    st.subheader("Model Performance Comparison")
+
+    task_choice = st.selectbox(
+        "Choose prediction task",
+        ["LOS", "Revenue"],
+        key="ml_task_choice"
+    )
+
+    task_df = metrics_df[
+        metrics_df["Target"] == task_choice
+    ].copy()
+
+    chart1, chart2 = st.columns(2)
+
+    with chart1:
+        st.subheader("Mean Absolute Error (MAE)")
+
+        fig_mae = px.bar(
+            task_df,
+            x="Model",
+            y="MAE",
+            color="Model",
+            title=f"{task_choice}: MAE Comparison"
+        )
+
+        st.plotly_chart(fig_mae, use_container_width=True)
+
+    with chart2:
+        st.subheader("R² Score")
+
+        fig_r2 = px.bar(
+            task_df,
+            x="Model",
+            y="R2",
+            color="Model",
+            title=f"{task_choice}: R² Comparison"
+        )
+
+        st.plotly_chart(fig_r2, use_container_width=True)
+
+    st.subheader("Complete Model Metrics")
+
+    st.dataframe(
+        metrics_df.round(4),
+        use_container_width=True,
+        hide_index=True
+    )
+
+    st.caption(
+        "These results are from the saved model evaluation file. "
+        "They describe the evaluated dataset and do not guarantee "
+        "the same performance on new hospital data."
+    )
+
+else:
+    st.warning(
+        f"Model metrics file not found at: {metrics_path}"
+    )
+
+
 
 
 
